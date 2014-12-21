@@ -145,7 +145,7 @@ public class Menu extends JPanel {
             }
         });
         this.jLabel1.setFont(new Font("Arial", 0, 11));
-        this.jLabel1.setText("<html> <b>Wersja:</b> 1.2 (16.03.2013)<br> <b>Autor:</b> Sebastian Malecki<br> <b>Kontakt:</b> seba_mal@op.pl<br> Wszelkie prawa zastrzeżone<br> 19.01.2012r. </html> ");
+        this.jLabel1.setText("<html> <b>Wersja:</b> 1.3 (21.12.2014)<br> <b>Autor:</b> Sebastian Malecki<br> <b>Kontakt:</b> seba_mal@op.pl<br> Wszelkie prawa zastrzeżone<br> 19.01.2012r. </html> ");
     
         this.kolorBox.setFont(new Font("Arial", 0, 11));
         this.kolorBox.setModel(new DefaultComboBoxModel(new String[] { "czerwone", "zielone", "białe", "zółte", "niebieskie" }));
@@ -185,10 +185,14 @@ public class Menu extends JPanel {
   
     private void dodajBActionPerformed(ActionEvent evt) {
         if (this.selected == 0) {
-            Dane dan = new Dane(this.licencje, true);
-            if (dan.getReturnStatus() == 1) {
-                Osoba os = dan.getOsoba();
-                dodaj(os);
+            try {
+                Dane dan = new Dane(this.licencje, true, Integer.valueOf(rok.getText()));
+                if (dan.getReturnStatus() == 1) {
+                    Osoba os = dan.getOsoba();
+                    dodaj(os);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Nieprawidłowy rok", null, JOptionPane.ERROR_MESSAGE);
             }
         } else if (this.selected == 1) {
             DaneF dan = new DaneF(this.licencje, true);
@@ -244,16 +248,20 @@ public class Menu extends JPanel {
         int idx = this.listaOsob.getSelectedIndex();
         if (idx >= 0) {
             if (this.selected == 0) {
-                Dane dan = new Dane(this.licencje, true, (Osoba)this.panel.getLista().get(idx));
-                if (dan.getReturnStatus() == 1) {
-                    Osoba os = dan.getOsoba();
+                try {
+                    Dane dan = new Dane(this.licencje, true, (Osoba)this.panel.getLista().get(idx), Integer.valueOf(rok.getText()));
+                    if (dan.getReturnStatus() == 1) {
+                        Osoba os = dan.getOsoba();
 
-                    String nazwa = os.getKodUCI() + ":" + os.getNazwisko() + ":" + os.getImie();
-                    this.listModel.remove(idx);
-                    this.listModel.add(idx, nazwa);
-                    this.listaOsob.setModel(this.listModel);
+                        String nazwa = os.getKodUCI() + ":" + os.getNazwisko() + ":" + os.getImie();
+                        this.listModel.remove(idx);
+                        this.listModel.add(idx, nazwa);
+                        this.listaOsob.setModel(this.listModel);
 
-                    this.licencje.repaint();
+                        this.licencje.repaint();
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Nieprawidłowy rok", null, JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 DaneF dan = new DaneF(this.licencje, true, (Osoba)this.panel.getLista().get(idx));
@@ -282,9 +290,14 @@ public class Menu extends JPanel {
     }
   
     private void jButton1ActionPerformed(ActionEvent evt) {
-        this.panel.setRok(this.rok.getText());
-        this.panel.repaint();
-        this.kolorBox.setSelectedIndex(getIndex(Integer.parseInt(this.rok.getText())));
+        try {
+            Integer.valueOf(rok.getText());
+            this.panel.setRok(this.rok.getText());
+            this.panel.repaint();
+            this.kolorBox.setSelectedIndex(getIndex(Integer.parseInt(this.rok.getText())));
+        } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Nieprawidłowy rok", null, JOptionPane.ERROR_MESSAGE);
+        }
     }
   
     private void generujBActionPerformed(ActionEvent evt) {

@@ -252,7 +252,7 @@ public class DaneF extends JDialog {
     }
     EventQueue.invokeLater(new Runnable() {
         public void run() {
-            Dane dialog = new Dane(new JFrame(), true);
+            DaneF dialog = new DaneF(new Licencje(), true);
             dialog.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
                     System.exit(0);

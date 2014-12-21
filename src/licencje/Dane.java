@@ -75,22 +75,25 @@ public class Dane extends JDialog {
     private JTextField narodowosc;
     private JTextField nazwisko;
     private JTextField nrLicencji;
+    private int rok;
   
-    public Dane(JFrame parent, boolean modal) {
+    public Dane(JFrame parent, boolean modal, int rok) {
         super(parent, modal);
         initComponents();
         this.baza = ((Licencje)parent).getBazaDanych(0);
         this.osoba = new Osoba("Zawodnik", 0);
+        this.rok = rok;
         setVisible(true);
     }
   
-    public Dane(Licencje parent, boolean modal, Osoba osoba) {
+    public Dane(Licencje parent, boolean modal, Osoba osoba, int rok) {
         super(parent, modal);
         initComponents();
 
         this.baza = parent.getBazaDanych(0);
         this.osoba = osoba;
-
+        this.rok = rok;
+        
         wstawDane(osoba);
         setVisible(true);
     }
@@ -229,7 +232,7 @@ public class Dane extends JDialog {
             }
         });
         this.klub.setEditable(true);
-        this.klub.setModel(new DefaultComboBoxModel(new String[] { " ", "GKS CARTUSIA KARTUZY", "MLKS BASZTA BYTÓW", "WKS FLOTA GDYNIA", "KS TREK GDYNIA", "KS LECHIA GDAŃSK", "NIEZRZESZONY" }));
+        this.klub.setModel(new DefaultComboBoxModel(new String[] { " ", "GKS CARTUSIA KARTUZY", "MLKS BASZTA BYTÓW", "WKS FLOTA GDYNIA", "KS TREK GDYNIA", "KS LECHIA GDAŃSK", "BELTA TEAM GDAŃSK", "NIEZRZESZONY" }));
     
         this.jButton5.setText("Anuluj");
         this.jButton5.addActionListener(new ActionListener() {
@@ -252,8 +255,8 @@ public class Dane extends JDialog {
     }
   
     private void jButton3ActionPerformed(ActionEvent evt) {
-        Calendar z = Calendar.getInstance();
-        int rok = z.get(1);
+        //Calendar z = Calendar.getInstance();
+        //int rok = z.get(1);
         try {
             int dataUr = Integer.parseInt(this.kodUCI.getText());
             if ((dataUr > 19000000) && (dataUr < 21000000)) {
@@ -270,19 +273,25 @@ public class Dane extends JDialog {
                     } else if (wiek < 19) {
                         this.kategoriaNar.setText("JUNIOR");
                         this.kategoriaUCI.setText("HOMMES JUNIOR");
+                    } else if (wiek < 30) {
+                        this.kategoriaNar.setText("CYKLOSPORT");
+                        this.kategoriaUCI.setText("CYKLOSPORT");
                     } else {
                         this.kategoriaNar.setText("MASTERS");
                         this.kategoriaUCI.setText("HOMMES MASTER");
                     }
                 } else if (wiek < 13) {
-                    kategoria = "ŻACZKA";
+                    kategoria = "ŻAKINI";
                 } else if (wiek < 15) {
                     kategoria = "MŁODZICZKA";
                 } else if (wiek < 17) {
                     kategoria = "JUNIORKA MŁ.";
                 } else if (wiek < 19) {
                     this.kategoriaNar.setText("JUNIORKA");
-                    this.kategoriaUCI.setText("FEMES JUNOR");
+                    this.kategoriaUCI.setText("FEMMES JUNOR");
+                } else if (wiek < 30) {
+                        this.kategoriaNar.setText("CYKLOSPORT");
+                        this.kategoriaUCI.setText("CYKLOSPORT");
                 } else {
                     this.kategoriaNar.setText("MASTERS");
                     this.kategoriaUCI.setText("FEMMES MASTER");
@@ -404,7 +413,7 @@ public class Dane extends JDialog {
         }
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Dane dialog = new Dane(new JFrame(), true);
+                Dane dialog = new Dane(new Licencje(), true, 2015);
                 dialog.addWindowListener(new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
                         System.exit(0);

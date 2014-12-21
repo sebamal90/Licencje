@@ -49,7 +49,7 @@ public class Licencje extends JFrame implements KeyListener {
     private String wpisane = "";
 
     public Licencje() {
-        setTitle("Licencje v1.2");
+        setTitle("Licencje v1.3");
         URL url = getClass().getResource("/favicon.png");
         ImageIcon imaicon = new ImageIcon(url);
         Image image = imaicon.getImage();
@@ -74,9 +74,9 @@ public class Licencje extends JFrame implements KeyListener {
         Nowy nowy = new Nowy(this, true, i);
         if (nowy.getReturnStatus() == 1) {
             if (nowy.getSelected() % 2 == 0) {
-                setTitle("Licencje v1.2 - zawodnik");
+                setTitle("Licencje v1.3 - zawodnik");
             } else if (nowy.getSelected() % 2 == 1) {
-                setTitle("Licencje v1.2 - osoba towarzysząca");
+                setTitle("Licencje v1.3 - osoba towarzysząca");
             }
             this.panel = new Panel(this);
             if (i == 0) {
